@@ -1,5 +1,7 @@
 *.zip
 *.pdf
+*.png
+*.jpg
 *.txt
 design
 *.vcd
