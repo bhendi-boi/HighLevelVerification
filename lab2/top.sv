@@ -2,6 +2,7 @@
 
 module top ();
 
+	integer SEED = 0;
   reg reset;
 
   reg txclk;
@@ -63,13 +64,12 @@ module top ();
   // 
 
   initial begin
-    #16
+    #32
     // checking transmission
     tx_enable = 1;
     rx_enable = 1;
-    ld_tx_data = 1; tx_data = 8'h3A; #16
+    ld_tx_data = 1; randomise_data(); #32
     ld_tx_data = 0;
-
   end
 
   always @(posedge rxclk) begin
@@ -77,11 +77,22 @@ module top ();
       rx_in = tx_out;
   end
 
-  always @(negedge rxclk) begin
+  always @(negedge txclk) begin
     if(rx_enable && !rx_empty) begin
       uld_rx_data = 1; #10 uld_rx_data = 0;
     end
   end
+
+  task randomise_data ();
+    tx_data = $random(SEED);
+		$display("Random Data Produced is : 8`h%h",tx_data);
+  endtask
+
+  task check_transmission ();
+     
+  endtask
+
+
   // dumping 
   initial begin
     $dumpfile("dump.vcd");
