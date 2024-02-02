@@ -44,7 +44,6 @@ module uart_tx (
         end
       end
       if (tx_enable && !tx_empty) begin
-        tx_cnt <= tx_cnt + 1;
         if (tx_cnt == 0) begin
           tx_out <= 0;
         end
@@ -56,6 +55,7 @@ module uart_tx (
           tx_cnt   <= 0;
           tx_empty <= 1;
         end
+        tx_cnt <= tx_cnt + 1;
       end
       if (!tx_enable) begin
         tx_cnt <= 0;
