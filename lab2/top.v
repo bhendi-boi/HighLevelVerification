@@ -72,7 +72,7 @@ module top ();
 
   end
 
-  always @(posedge txclk) begin
+  always @(posedge rxclk) begin
     if(rx_enable)
       rx_in = tx_out;
   end
