@@ -8,7 +8,7 @@ wave:
 	gtkwave dump.vcd
 
 clean:
-	rm design dump.vcd
+	rm -f design dump.vcd
 
 all: 
 	make clean
