@@ -9,7 +9,8 @@ wave:
 
 clean:
 	rm -f design dump.vcd
-
+	clear
+	
 all: 
 	make clean
 	make build
