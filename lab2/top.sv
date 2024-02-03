@@ -20,6 +20,10 @@ module top ();
   reg rx_in;
   wire rx_empty;
 
+  // temp vars
+  reg [9:0] tx_out_check;
+  bit [7:0] transmitted_data;
+
   initial begin
     reset = 1;
     txclk = 0;
@@ -68,8 +72,10 @@ module top ();
     // checking transmission
     tx_enable = 1;
     rx_enable = 1;
-    ld_tx_data = 1; randomise_data(); #32
+    randomise_data(); 
+    ld_tx_data = 1; #32
     ld_tx_data = 0;
+    check_transmission();
   end
 
   always @(posedge rxclk) begin
@@ -85,18 +91,35 @@ module top ();
 
   task randomise_data ();
     tx_data = $random(SEED);
-		$display("Random Data Produced is : 8`h%h",tx_data);
+		$display("[Randomise Data] Random Data Produced is : 8'h%h",tx_data);
   endtask
 
   task check_transmission ();
-     
-  endtask
+    tx_out_check = 9'h0;
+    for (int i = 0; i < 10; i++) begin
+      @(posedge txclk) begin
+        #1
+        tx_out_check = {tx_out,tx_out_check[9:1]};
+        // $display("%b - %b \n",tx_out, tx_out_check);
+      end
+    end
+    
+    for (int i = 0; i<8; i++) begin
+      transmitted_data[i] = tx_out_check[8-i];
+    end
 
+    if(tx_out_check[0] == 0 && tx_out_check[9] == 1 && transmitted_data == tx_data) begin 
+      $display("[Check Transmission] Transimssion Successful. Transmitted data: %h\n",transmitted_data);
+    end
+    else begin
+      $display("[Check Transmission] Transmission Failed");
+    end
+  endtask
 
   // dumping 
   initial begin
     $dumpfile("dump.vcd");
-    $dumpvars(1, transmitter);
+    $dumpvars(0, transmitter);
     $dumpvars(0, reciever);
   end
 endmodule
