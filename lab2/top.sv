@@ -12,7 +12,6 @@ module top ();
   wire tx_out;
   wire tx_empty;
 
-  // reciever wires
   reg rxclk;
   reg uld_rx_data;
   wire [7:0] rx_data;
@@ -20,7 +19,7 @@ module top ();
   reg rx_in;
   wire rx_empty;
 
-  // temp vars
+  // ? temp vars
   reg [9:0] tx_out_check;
   bit [7:0] transmitted_data;
   bit [7:0] recieved_data;
@@ -36,7 +35,7 @@ module top ();
     #2000 $finish();
   end
 
-  // clock for both the duts
+  // ? clock for both the duts
   always begin
     #16 txclk = !txclk;
   end
@@ -45,7 +44,7 @@ module top ();
     #1 rxclk = !rxclk;
   end
 
-  // instantiation
+  // ? instantiation
   uart_tx transmitter (
       reset,
       txclk,
@@ -65,8 +64,6 @@ module top ();
       rx_in,
       rx_empty
   );
-
-  // 
 
   initial begin
     #32
@@ -143,7 +140,8 @@ module top ();
       end
     end
   endtask
-  // dumping 
+
+  // ? dumping 
   initial begin
     $dumpfile("dump.vcd");
     $dumpvars(0, transmitter);
