@@ -100,7 +100,6 @@ module top ();
       @(posedge txclk) begin
         #1
         tx_out_check = {tx_out,tx_out_check[9:1]};
-        // $display("%b - %b \n",tx_out, tx_out_check);
       end
     end
     
