@@ -16,3 +16,7 @@ all:
 	make build
 	make synth
 	make wave
+term:
+	make clean
+	make build
+	make synth
