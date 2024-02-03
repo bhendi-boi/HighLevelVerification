@@ -5,16 +5,16 @@ module top ();
   integer SEED = 0;
   integer NUM_TESTS = 10;
   integer errors = 0;
-  reg reset;
+  bit reset;
 
-  reg txclk;
+  bit txclk;
   reg ld_tx_data;
   reg [7:0] tx_data;
   reg tx_enable;
   wire tx_out;
   wire tx_empty;
 
-  reg rxclk;
+  bit rxclk;
   reg uld_rx_data;
   wire [7:0] rx_data;
   reg rx_enable;
