@@ -70,12 +70,9 @@ module top ();
   initial begin
     #32
     // checking transmission
-    tx_enable = 1;
     rx_enable = 1;
-    randomise_data(); 
-    ld_tx_data = 1; #32
-    ld_tx_data = 0;
-    check_transmission();
+    transmission_seq();#32
+    transmission_seq();
   end
 
   always @(posedge rxclk) begin
@@ -89,6 +86,15 @@ module top ();
     end
   end
 
+  task transmission_seq ();
+    tx_enable = 1;
+    randomise_data(); 
+    ld_tx_data = 1; #32
+    ld_tx_data = 0;
+    check_transmission();
+    tx_enable = 0;
+  endtask
+
   task randomise_data ();
     tx_data = $random(SEED);
 		$display("[Randomise Data] Random Data Produced is : 8'h%h",tx_data);
@@ -99,19 +105,25 @@ module top ();
     for (int i = 0; i < 10; i++) begin
       @(posedge txclk) begin
         #1
-        tx_out_check = {tx_out,tx_out_check[9:1]};
+        tx_out_check[i] = tx_out;
       end
     end
-    
-    for (int i = 0; i<8; i++) begin
-      transmitted_data[i] = tx_out_check[8-i];
-    end
 
+    transmitted_data = tx_out_check[8:1];
     if(tx_out_check[0] == 0 && tx_out_check[9] == 1 && transmitted_data == tx_data) begin 
       $display("[Check Transmission] Transimssion Successful. Transmitted data: %h\n",transmitted_data);
     end
     else begin
-      $display("[Check Transmission] Transmission Failed");
+      $display("[Check Transmission] Transmission Failed.");
+      if(tx_out_check[0] != 0) begin
+        $display("Start bit is missing.\n");
+      end
+      else if (tx_out_check[9] != 1) begin
+        $display("End bit is missing.\n");
+      end
+      else begin
+        $display("Problem with transmitted data. Data transmitted is %h\n",transmitted_data);
+      end
     end
   endtask
 
