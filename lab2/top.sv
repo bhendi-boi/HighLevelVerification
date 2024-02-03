@@ -73,7 +73,8 @@ module top ();
     // checking transmission
     rx_enable = 1;
     transmission_seq();
-    // transmission_seq();
+    check_reciever();#32
+    transmission_seq();
     check_reciever();
   end
 
@@ -113,7 +114,7 @@ module top ();
 
     transmitted_data = tx_out_check[8:1];
     if(tx_out_check[0] == 0 && tx_out_check[9] == 1 && transmitted_data == tx_data) begin 
-      $display("[Check Transmission] Transimssion Successful. Transmitted data: %h\n",transmitted_data);
+      $display("[Check Transmission] Transimssion Successful. Transmitted data: %h",transmitted_data);
     end
     else begin
       $display("[Check Transmission] Transmission Failed.");
@@ -142,7 +143,6 @@ module top ();
       end
     end
   endtask
-  
   // dumping 
   initial begin
     $dumpfile("dump.vcd");
