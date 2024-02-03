@@ -3,6 +3,7 @@
 module top ();
 
   integer SEED = 0;
+  integer NUM_TESTS = 10;
   integer errors = 0;
   reg reset;
 
@@ -24,17 +25,6 @@ module top ();
   reg [9:0] tx_out_check;
   bit [7:0] transmitted_data;
   bit [7:0] recieved_data;
-
-  initial begin
-    reset = 1;
-    txclk = 0;
-    rxclk = 0;
-    rx_enable = 0;
-    tx_enable = 0;
-    uld_rx_data = 0;
-    #10 reset = 0;
-    #2000 $finish();
-  end
 
   // ? clock for both the duts
   always begin
@@ -67,13 +57,23 @@ module top ();
   );
 
   initial begin
-    #32 rx_enable = 1;
-    transmission_seq();
-    check_reciever();
-    #32 transmission_seq();
-    check_reciever();
+    reset = 1;
+    txclk = 0;
+    rxclk = 0;
+    rx_enable = 0;
+    tx_enable = 0;
+    uld_rx_data = 0;
+    #10 reset = 0;
+  end
 
+  initial begin
+    #32 rx_enable = 1;
+    for (int i = 0; i < NUM_TESTS; i++) begin
+      #32 transmission_seq();
+      check_reciever();
+    end
     display_results();
+    $finish();
   end
 
   always @(posedge rxclk) begin
