@@ -23,6 +23,7 @@ module top ();
   // temp vars
   reg [9:0] tx_out_check;
   bit [7:0] transmitted_data;
+  bit [7:0] recieved_data;
 
   initial begin
     reset = 1;
@@ -71,8 +72,9 @@ module top ();
     #32
     // checking transmission
     rx_enable = 1;
-    transmission_seq();#32
     transmission_seq();
+    // transmission_seq();
+    check_reciever();
   end
 
   always @(posedge rxclk) begin
@@ -80,7 +82,7 @@ module top ();
       rx_in = tx_out;
   end
 
-  always @(negedge txclk) begin
+  always @(posedge rxclk) begin
     if(rx_enable && !rx_empty) begin
       uld_rx_data = 1; #10 uld_rx_data = 0;
     end
@@ -127,6 +129,20 @@ module top ();
     end
   endtask
 
+  task check_reciever ();
+    @(posedge uld_rx_data) begin
+      @(posedge rxclk) begin
+        recieved_data = rx_data;
+        if(transmitted_data == recieved_data) begin
+          $display("[Check Reciever] Data recieved sucessfully. Recieved data: 8'h%h\n",recieved_data);
+        end
+        else begin
+          $display("[Check Reciever] Corrupt data recieved. Recieved data: 8'h%h\n",recieved_data);
+        end
+      end
+    end
+  endtask
+  
   // dumping 
   initial begin
     $dumpfile("dump.vcd");
