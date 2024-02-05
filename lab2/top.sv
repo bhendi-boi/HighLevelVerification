@@ -68,7 +68,7 @@ module top ();
 
   initial begin
     #32 rx_enable = 1;
-    for (int i = 0; i < NUM_TESTS; i++) begin
+    repeat (NUM_TESTS) begin
       #32 transmission_seq();
       check_reciever();
     end
@@ -126,7 +126,7 @@ module top ();
     end
   endtask
 
-  task check_reciever();
+  task check_reception();
     @(posedge uld_rx_data) begin
       @(posedge rxclk) begin
         recieved_data = rx_data;
