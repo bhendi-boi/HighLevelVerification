@@ -6,3 +6,7 @@
 design
 *.vcd
 *.wmv
+*tex
+*log
+*aux
+*gz
