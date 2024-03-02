@@ -1,22 +1,22 @@
 module top ();
-  parameter NUM_PORTS = 8;
+  parameter numport = 8;
   reg clock;
   wire packet_valid;
   wire [7:0] data;
-  wire [NUM_PORTS-1:0][7:0] port;
-  wire [NUM_PORTS-1:0] ready;
-  wire [NUM_PORTS-1:0] read;
+  wire [numport-1:0][7:0] port;
+  wire [numport-1:0] ready;
+  wire [numport-1:0] read;
 
   reg reset;
   reg mem_en;
   reg mem_rd_wr;
   reg [7:0] mem_data;
   reg [2:0] mem_add;
-  reg [7:0] mem[3:0];
+  reg [7:0] mem[numport-1:0];
 
   // take istance of testbench
   sw_tb #(
-      .NUM_PORTS(NUM_PORTS)
+      .numport(numport)
   ) tb (
       clock,
       packet_valid,
@@ -28,7 +28,7 @@ module top ();
 
   // take instance dut
   switch #(
-      .NUM_PORTS(NUM_PORTS)
+      .numport(numport)
   ) dut (
       clock,
       reset,
