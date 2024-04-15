@@ -1,4 +1,6 @@
-
+`include "coin_counter.v"
+`include "can_count.v"
+`include "state_machine.v"
 
 module dkm  // drink_machine top
 (
