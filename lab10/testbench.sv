@@ -16,7 +16,7 @@ module tbench_top;
   //reset Generation
   initial begin
     inf.rst = 1;
-    #5 inf.rst = 0;
+    #10 inf.rst = 0;
   end
 
   initial begin
