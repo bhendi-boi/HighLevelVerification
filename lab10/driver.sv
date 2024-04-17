@@ -20,13 +20,21 @@ class driver;
     this.gen2driv = gen2driv;
   endfunction
 
+  task load_cans_to_machine();
+    @(posedge vif.clk) begin
+      vif.load_cans = 1;
+      vif.cans = 10;
+    end
+    #1 vif.load_cans = 0;
+  endtask
+
   task load_coins_to_machine();
     @(posedge vif.clk) begin
       vif.load_coins = 1;
       vif.dimes = 10;
       vif.nickels = 10;
     end
-    vif.load_coins = 0;
+    #1 vif.load_coins = 0;
   endtask
 
   //Reset task, Reset the Interface signals to default/initial values
@@ -34,7 +42,10 @@ class driver;
     wait (vif.rst);
     $display("[ DRIVER ] ----- Reset Started -----");
 
-    load_coins_to_machine();
+    fork
+      load_coins_to_machine();
+      load_cans_to_machine();
+    join_none
     wait (!vif.rst);
     $display("[ DRIVER ] ----- Reset Ended   -----");
   endtask
