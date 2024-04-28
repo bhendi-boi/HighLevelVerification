@@ -20,18 +20,21 @@ class monitor;
 
   //Samples the interface signal and send the sample packet to scoreboard
   task main;
+    @(posedge vif.clk);
+    @(posedge vif.clk);
     forever begin
       transaction trans;
       trans = new();
+
       @(posedge vif.clk) begin
-        $display("mon");
         trans.quarter_in = vif.quarter_in;
         trans.dime_in = vif.dime_in;
         trans.nickel_in = vif.nickel_in;
+        trans.dispense = vif.dispense;
 
         // @(posedge trans.dispense) begin
-        trans.load_cans = vif.load_cans;
-        trans.load_coins = vif.load_coins;
+        // trans.load_cans = vif.load_cans;
+        // trans.load_coins = vif.load_coins;
         trans.empty = vif.empty;
 
 
@@ -39,12 +42,11 @@ class monitor;
         trans.nickels = vif.nickels;
         trans.dimes = vif.dimes;
         trans.two_dime_out = vif.two_dime_out;
-        trans.nickel_dime_out = vif.nickel_dime_out;
         trans.dime_out = vif.dime_out;
         trans.nickel_dime_out = vif.nickel_dime_out;
         // end
         mon2scb.put(trans);
-        trans.display("Monitor");
+        trans.display("[ Monitor ]");
       end
     end
   endtask

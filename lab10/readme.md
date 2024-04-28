@@ -29,3 +29,20 @@ coverage data is created under cov_work/scope/test_rand
    imc -batch -init imc.tcl
 
 6. The file coverage.rpt will contain detailed report
+
+## Spec
+
+| notation | value in cents |
+| -------- | -------------- |
+| nickel   | 5              |
+| dime     | 10             |
+| quarter  | 25             |
+
+1. how to load ?
+
+- assert load_coins, specify nickels and dimes
+- asserting load_cans, specify cans
+
+2. how much does a can cost ?
+
+- 50 cents
