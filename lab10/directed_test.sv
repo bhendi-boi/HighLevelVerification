@@ -14,7 +14,7 @@ program test (
   // Use logical OR to check if any two or more bits are high
   !(nickel_in && dime_in) && !(nickel_in && quarter_in) && !(dime_in && quarter_in);
 }
-
+ 
   endclass
 
   //declaring environment instance
@@ -28,7 +28,7 @@ program test (
     my_tr = new();
 
     //setting the repeat count of generator as 4, means to generate 4 packets
-    env.gen.repeat_count = 50;
+    env.gen.repeat_count = 100;
 
     env.gen.trans = my_tr;
 

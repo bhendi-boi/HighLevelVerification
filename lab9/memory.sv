@@ -2,8 +2,8 @@
 
 module wb_memory #(
     // {{{
-    parameter  DW = 32,
-    localparam AW = 3
+    parameter DW = 32,
+    parameter AW = 3
     // }}}
 ) (
     // {{{

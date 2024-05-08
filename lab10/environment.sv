@@ -4,6 +4,7 @@
 `include "driver.sv"
 `include "monitor.sv"
 `include "scoreboard.sv"
+`include "coverage.sv"
 class environment;
 
   //generator and driver instance

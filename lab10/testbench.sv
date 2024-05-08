@@ -11,7 +11,36 @@
 
 module tbench_top;
 
+  covergroup dkm_cov @ (posedge inf.clk);
 
+  option.per_instance = 1;
+  
+  covr1:coverpoint inf.nickel_out      ;
+  covr2:coverpoint inf.dime_out        ;
+  // covr3:coverpoint inf.nickel_dime_out ;
+  covr4:coverpoint inf.two_dime_out    ;
+  covr5:coverpoint inf.dispense        ;
+  covr6:coverpoint inf.use_exact       ;
+  covr7:coverpoint inf.empty           ;
+  covr8:coverpoint inf.load_coins      ;
+  covr9:coverpoint inf.load_cans       ;
+  covr10:coverpoint inf.dimes {
+    bins all = {[0:255]};
+  }         
+  covr11:coverpoint inf.nickels {
+    bins all = {[0:255]};
+  }                 
+  covr12:coverpoint inf.cans   {
+    bins all = {[0:255]};
+  }    
+  covr13:coverpoint inf.nickel_in       ;
+  covr14:coverpoint inf.dime_in         ;
+  covr15:coverpoint inf.quarter_in      ;
+  // cross_nickel_dime : cross inf.nickel_in, inf.dime_in;
+endgroup
+
+dkm_cov dkm_cov_inst = new();
+  
 
   //reset Generation
   initial begin
@@ -52,6 +81,14 @@ module tbench_top;
       .rst(inf.rst),
       .clk(inf.clk)
   );
+  
+  final begin
+    dkm_cov_inst.sample();
+    $display("Class Based Coverage = %0.2f %%\n", dkm_cov_inst.get_inst_coverage());
+end
+  always @(posedge inf.clk) begin
+  $display("Class Based Coverage = %0.2f %%\n", dkm_cov_inst.get_inst_coverage());
+  end
   //enabling the wave dump
   initial begin
     $dumpfile("dump.vcd");
